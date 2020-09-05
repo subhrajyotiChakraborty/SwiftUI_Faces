@@ -9,8 +9,30 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    let list = [
+        Face(name: "One"),
+        Face(name: "Two"),
+        Face(name: "Three"),
+        Face(name: "Four")
+    ]
+    @State private var showEditPage = false
+    
     var body: some View {
-        Text("Hello, World!")
+        NavigationView {
+            List(list) { face in
+                Text(face.name)
+            }
+            .navigationBarTitle("Faces")
+            .navigationBarItems(trailing: Button(action: {
+                self.showEditPage = true
+            }, label: {
+                Image(systemName: "plus")
+            }))
+            .sheet(isPresented: $showEditPage) {
+                EditView()
+            }
+        }
     }
 }
 

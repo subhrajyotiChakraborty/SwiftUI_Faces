@@ -13,6 +13,8 @@
 		22B5C98025037DE80009CA35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22B5C97F25037DE80009CA35 /* Assets.xcassets */; };
 		22B5C98325037DE80009CA35 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22B5C98225037DE80009CA35 /* Preview Assets.xcassets */; };
 		22B5C98625037DE80009CA35 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22B5C98425037DE80009CA35 /* LaunchScreen.storyboard */; };
+		22B5C98E25037F980009CA35 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B5C98D25037F980009CA35 /* Face.swift */; };
+		22B5C990250384E90009CA35 /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B5C98F250384E90009CA35 /* EditView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		22B5C98225037DE80009CA35 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		22B5C98525037DE80009CA35 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22B5C98725037DE80009CA35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22B5C98D25037F980009CA35 /* Face.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
+		22B5C98F250384E90009CA35 /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,11 +62,13 @@
 			children = (
 				22B5C97925037DE70009CA35 /* AppDelegate.swift */,
 				22B5C97B25037DE70009CA35 /* SceneDelegate.swift */,
+				22B5C98F250384E90009CA35 /* EditView.swift */,
 				22B5C97D25037DE70009CA35 /* ContentView.swift */,
 				22B5C97F25037DE80009CA35 /* Assets.xcassets */,
 				22B5C98425037DE80009CA35 /* LaunchScreen.storyboard */,
 				22B5C98725037DE80009CA35 /* Info.plist */,
 				22B5C98125037DE80009CA35 /* Preview Content */,
+				22B5C98D25037F980009CA35 /* Face.swift */,
 			);
 			path = Faces;
 			sourceTree = "<group>";
@@ -146,6 +152,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22B5C98E25037F980009CA35 /* Face.swift in Sources */,
+				22B5C990250384E90009CA35 /* EditView.swift in Sources */,
 				22B5C97A25037DE70009CA35 /* AppDelegate.swift in Sources */,
 				22B5C97C25037DE70009CA35 /* SceneDelegate.swift in Sources */,
 				22B5C97E25037DE70009CA35 /* ContentView.swift in Sources */,
