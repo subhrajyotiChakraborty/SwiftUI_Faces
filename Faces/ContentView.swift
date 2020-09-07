@@ -21,17 +21,20 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List(list) { face in
-                Text(face.name)
+                NavigationLink(destination: EditView()) {
+                    Image("defaultUser")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 44, height: 44)
+                        .clipShape(Circle())
+                        .padding(.trailing)
+                    Text(face.name)
+                }
             }
             .navigationBarTitle("Faces")
-            .navigationBarItems(trailing: Button(action: {
-                self.showEditPage = true
-            }, label: {
+            .navigationBarItems(trailing: NavigationLink(destination: EditView(), label: {
                 Image(systemName: "plus")
             }))
-            .sheet(isPresented: $showEditPage) {
-                EditView()
-            }
         }
     }
 }

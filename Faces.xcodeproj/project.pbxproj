@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		229D252D2503F29100A0CEC2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229D252C2503F29100A0CEC2 /* ImagePicker.swift */; };
 		22B5C97A25037DE70009CA35 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B5C97925037DE70009CA35 /* AppDelegate.swift */; };
 		22B5C97C25037DE70009CA35 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B5C97B25037DE70009CA35 /* SceneDelegate.swift */; };
 		22B5C97E25037DE70009CA35 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B5C97D25037DE70009CA35 /* ContentView.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		229D252C2503F29100A0CEC2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		22B5C97625037DE70009CA35 /* Faces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Faces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22B5C97925037DE70009CA35 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22B5C97B25037DE70009CA35 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			children = (
 				22B5C97925037DE70009CA35 /* AppDelegate.swift */,
 				22B5C97B25037DE70009CA35 /* SceneDelegate.swift */,
+				229D252C2503F29100A0CEC2 /* ImagePicker.swift */,
 				22B5C98F250384E90009CA35 /* EditView.swift */,
 				22B5C97D25037DE70009CA35 /* ContentView.swift */,
 				22B5C97F25037DE80009CA35 /* Assets.xcassets */,
@@ -155,6 +158,7 @@
 				22B5C98E25037F980009CA35 /* Face.swift in Sources */,
 				22B5C990250384E90009CA35 /* EditView.swift in Sources */,
 				22B5C97A25037DE70009CA35 /* AppDelegate.swift in Sources */,
+				229D252D2503F29100A0CEC2 /* ImagePicker.swift in Sources */,
 				22B5C97C25037DE70009CA35 /* SceneDelegate.swift in Sources */,
 				22B5C97E25037DE70009CA35 /* ContentView.swift in Sources */,
 			);
