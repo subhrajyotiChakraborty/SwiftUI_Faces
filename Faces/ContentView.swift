@@ -9,19 +9,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var list = Faces()
     
-    let list = [
-        Face(name: "One"),
-        Face(name: "Two"),
-        Face(name: "Three"),
-        Face(name: "Four")
-    ]
     @State private var showEditPage = false
     
+    func updateList() {
+        //        let updatedListData = list
+        //        list = updatedListData
+    }
+    
     var body: some View {
-        NavigationView {
-            List(list) { face in
-                NavigationLink(destination: EditView()) {
+        return NavigationView {
+            List(list.faces, id: \.id) { face in
+                NavigationLink(destination: EditView(faces: self.list, isEditMode: true, position: face.id)) {
                     Image("defaultUser")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -32,7 +32,8 @@ struct ContentView: View {
                 }
             }
             .navigationBarTitle("Faces")
-            .navigationBarItems(trailing: NavigationLink(destination: EditView(), label: {
+            .onAppear(perform: updateList)
+            .navigationBarItems(trailing: NavigationLink(destination: EditView(faces: self.list, isEditMode: false), label: {
                 Image(systemName: "plus")
             }))
         }

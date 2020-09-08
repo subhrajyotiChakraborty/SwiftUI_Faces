@@ -6,10 +6,16 @@
 //  Copyright © 2020 Subhrajyoti Chakraborty. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
 
 
-struct Face: Identifiable {
+struct Face: Identifiable, Codable {
     let id = UUID()
-    var name: String
+    var name = ""
+    var jobTitle = ""
+}
+
+
+class Faces: ObservableObject {
+    @Published var faces: [Face] = []
 }
