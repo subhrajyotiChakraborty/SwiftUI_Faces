@@ -42,7 +42,11 @@ struct ContentView: View {
                             .frame(width: 44, height: 44)
                             .clipShape(Circle())
                             .padding(.trailing)
-                        Text(face.name)
+                        VStack(alignment: .leading) {
+                            Text(face.name)
+                            Text(face.jobTitle)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
                 .onDelete(perform: removeItem)

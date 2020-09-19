@@ -40,10 +40,6 @@ struct MapView: UIViewRepresentable {
             self.parent = parent
         }
         
-//        func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-//            parent.location = mapView.centerCoordinate
-//        }
-        
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
             let identifier = "Placemark"
 
