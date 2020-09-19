@@ -7,51 +7,63 @@
 //
 
 import SwiftUI
+import MapKit
 import CoreImage
 import CoreImage.CIFilterBuiltins
 
 struct EditView: View {
     
     @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var faces: Faces
+    
     @State private var name = ""
     @State private var jobTitle = ""
     @State private var showImagePicker = false
     @State private var inputImage: UIImage?
     @State private var image: Image?
-    @ObservedObject var faces: Faces
     @State private var indexPosition: Int = 0
     @State private var showFullImage = false
     @State private var showSheet = false
+    
+    let locationFetcher = LocationFetcher()
     var isEditMode: Bool
     var position: UUID?
+    
+    func getLocation() -> CLLocationCoordinate2D? {
+        if let location = self.locationFetcher.lastKnownLocation {
+            print("Your location is \(location)")
+            return location
+        } else {
+            print("Your location is unknown")
+            return nil
+        }
+    }
+    
+    func getFace() -> Face {
+        let facePosition = faces.faces.firstIndex(where: { $0.id == position! }) ?? 0
+        return faces.faces[facePosition]
+    }
+    
+    func getSelectedFacesIndexPosition () -> Int {
+        return faces.faces.firstIndex(where: { $0.id == position! }) ?? 0
+    }
     
     func loadImage() {
         guard let inputImage = inputImage else { return }
         image = Image(uiImage: inputImage)
     }
     
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
-    }
-    
-    func saveData() {
-        do {
-            let fileName = getDocumentsDirectory().appendingPathComponent("SavedFaces")
-            let data = try JSONEncoder().encode(self.faces.faces)
-            try data.write(to: fileName, options: [.atomicWrite, .completeFileProtection])
-        } catch  {
-            print("Unable to save data.")
-        }
-    }
-    
     func updateFormData() {
+        self.locationFetcher.start()
+        
         if isEditMode {
-            indexPosition = faces.faces.firstIndex(where: { $0.id == position! }) ?? 0
-            name = faces.faces[indexPosition].name
-            jobTitle = faces.faces[indexPosition].jobTitle
-            if faces.faces[indexPosition].image != nil {
-                let faceImage = faces.faces[indexPosition].image!
+            let selectedFace = getFace()
+            indexPosition = getSelectedFacesIndexPosition()
+            name = selectedFace.name
+            jobTitle = selectedFace.jobTitle
+            
+            if selectedFace.image != nil {
+                let faceImage = selectedFace.image!
                 let uiImage = faceImage.getImage()
                 guard let safeUIImage = uiImage else { return }
                 image = Image(uiImage: safeUIImage)
@@ -60,29 +72,28 @@ struct EditView: View {
         }
     }
     
-    func createFace() {
+    func createFace(at position: Int) {
         var newFace = Face()
         newFace.name = name
         newFace.jobTitle = jobTitle
+        
         if image != nil {
             newFace.image = FaceImage(withImage: inputImage!)
         }
-        faces.faces.insert(newFace, at: 0)
         
+        if let currentLocation = getLocation() {
+            print("lat =>", currentLocation.latitude)
+            newFace.latitude = currentLocation.latitude
+            print("lon =>", currentLocation.longitude)
+            newFace.longitude = currentLocation.longitude
+        }
+        
+        faces.faces.insert(newFace, at: position)
     }
     
-    func updateListData() {
-        faces.faces.remove(at: indexPosition)
-        
-        var newFace = Face()
-        newFace.name = name
-        newFace.jobTitle = jobTitle
-        if image != nil {
-            guard let inputImage = inputImage else { return }
-            let faceImage = FaceImage(withImage: inputImage)
-            newFace.image = faceImage
-        }
-        faces.faces.insert(newFace, at: indexPosition)
+    func updateFace() {
+        createFace(at: indexPosition)
+        faces.faces.remove(at: indexPosition + 1)
     }
     
     var body: some View {
@@ -116,16 +127,33 @@ struct EditView: View {
                         self.showSheet = true
                     }
                     
-                    Button(action: {
-                        self.showImagePicker = false
-                        self.showFullImage = true
-                        self.showSheet = true
-                    }) {
-                        Text("View Full Image")
+                    if isEditMode {
+                        Button(action: {
+                            self.showImagePicker = false
+                            self.showFullImage = true
+                            self.showSheet = true
+                        }) {
+                            Text("View Full Image")
+                        }
+                        .padding()
+                        .border(Color.blue, width: 2)
+                        .clipShape(Rectangle())
                     }
-                    .padding()
-                    .border(Color.blue, width: 5)
-                    .clipShape(Rectangle())
+                }
+            }
+            
+            if isEditMode {
+                Section {
+                    HStack(alignment: .center) {
+                        NavigationLink(destination: UserMapView(latitude: self.getFace().latitude ?? 0, longitude: self.getFace().longitude ?? 0)) {
+                            Image(systemName: "mappin.and.ellipse")
+                            VStack(alignment: .leading) {
+                                Text("Map Coordinates")
+                                Text("lat: \(self.getFace().latitude ?? 0), long: \(self.getFace().longitude ?? 0)")
+                            }
+                            .padding(.leading)
+                        }
+                    }
                 }
             }
         }
@@ -145,18 +173,18 @@ struct EditView: View {
                 }
             }
         })
-            .navigationBarTitle(self.isEditMode ? "Details" : "Create", displayMode: .inline)
-            .navigationBarItems(trailing: Button(action: {
-                if self.isEditMode {
-                    self.updateListData()
-                } else {
-                    self.createFace()
-                }
-                self.saveData()
-                self.presentationMode.wrappedValue.dismiss()
-            }, label: {
-                Text("Done")
-            }))
+        .navigationBarTitle(self.isEditMode ? "Details" : "Create", displayMode: .inline)
+        .navigationBarItems(trailing: Button(action: {
+            if self.isEditMode {
+                self.updateFace()
+            } else {
+                self.createFace(at: 0)
+            }
+            faces.save()
+            self.presentationMode.wrappedValue.dismiss()
+        }, label: {
+            Text("Done")
+        }))
     }
 }
 

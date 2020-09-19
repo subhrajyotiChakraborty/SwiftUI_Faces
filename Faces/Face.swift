@@ -8,12 +8,13 @@
 
 import SwiftUI
 
-
 struct Face: Identifiable, Codable {
     let id = UUID()
     var name = ""
     var jobTitle = ""
     var image: FaceImage?
+    var latitude: Double?
+    var longitude: Double?
 }
 
 struct FaceImage: Codable{
@@ -35,5 +36,36 @@ struct FaceImage: Codable{
 
 
 class Faces: ObservableObject {
-    @Published var faces: [Face] = []
+    @Published var faces: [Face]
+    static let saveKey = "SavedFaces"
+    
+    init() {
+        do {
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let filePath = paths[0].appendingPathComponent(Self.saveKey)
+            let data = try Data(contentsOf: filePath)
+            let decodeData = try JSONDecoder().decode([Face].self, from: data)
+            self.faces = decodeData
+            return
+        } catch {
+            print("Unable to load data \(error.localizedDescription)")
+        }
+        
+        self.faces = []
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
+    func save() {
+        let filePath = getDocumentsDirectory().appendingPathComponent(Self.saveKey)
+        do {
+            let data = try JSONEncoder().encode(faces)
+            try data.write(to: filePath, options: [.atomicWrite, .completeFileProtection])
+        } catch  {
+            print("Unable to save data \(error.localizedDescription)")
+        }
+    }
 }

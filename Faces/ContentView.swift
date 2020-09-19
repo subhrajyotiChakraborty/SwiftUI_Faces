@@ -23,22 +23,12 @@ struct ContentView: View {
     
     func removeItem(at offset: IndexSet) {
         list.faces.remove(atOffsets: offset)
+        list.save()
     }
     
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
-    }
-    
-    func loadData() {
-        let fileName = getDocumentsDirectory().appendingPathComponent("SavedFaces")
-        do {
-            let data = try Data(contentsOf: fileName)
-            let faces = try JSONDecoder().decode([Face].self, from: data)
-            list.faces = faces
-        } catch {
-            print("Unable to load saved data.")
-        }
     }
     
     var body: some View {
@@ -57,7 +47,6 @@ struct ContentView: View {
                 }
                 .onDelete(perform: removeItem)
             }
-            .onAppear(perform: loadData)
             .navigationBarTitle("Faces")
             .navigationBarItems(leading: EditButton(), trailing: NavigationLink(destination: EditView(faces: self.list, isEditMode: false), label: {
                 Image(systemName: "plus")
